@@ -47,7 +47,8 @@ int main()
   sockaddr_in addr{};
   addr.sin_family = AF_INET;
   addr.sin_addr.s_addr = INADDR_ANY;
-  addr.sin_port = 0;  //port zero means OS will choose a free port
+  //addr.sin_port = 0;  //port zero means OS will choose a free port //original
+  addr.sin_port = htons(42069);  
   if (bind(sock, (sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR) {
     std::cerr << "bind failed: " << WSAGetLastError() << '\n';
     return 1;
@@ -66,7 +67,7 @@ int main()
     char buf[1024];
     while (true) {
       sockaddr_in from{};
-      int flen{ sizeof(from) };
+      int flen{ sizeof(from) };  
       int n{ recvfrom(sock, buf, sizeof(buf) - 1, 0, (sockaddr *)&from, &flen) };
       if (n < 0) {continue;}
       buf[n] = '\0';
