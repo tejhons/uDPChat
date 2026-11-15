@@ -11,14 +11,14 @@ int main()
   std::string ip{};
   int port{};
 
-  std::cout << "Enter Server IP: "
+  std::cout << "Enter Server IP: ";
   std::getline(std::cin, ip);
   
-  std::cout << "Server Port: "
+  std::cout << "Server Port: ";
   std::cin >> port;
   std::cin.ignore(); //leftover newline
   
-  socketaddr_in server{};
+  sockaddr_in server{};
   server.sin_family = AF_INET;
   server.sin_port = htons(port);
   if (inet_pton(AF_INET, ip.c_str(), &server.sin_addr) != 1){
@@ -32,15 +32,15 @@ int main()
     char buff[1024];
     while (true){
       ssize_t n{ recvfrom(sock, buff, sizeof(buff) - 1, 0, nullptr, nullptr) };
-      if (n < 0) {continue};
-      buff[n]{ '\0' };
+      if (n < 0) {continue;}
+      buff[n] = { '\0' };
       std::cout << "[server]" << buff << '\n';
     }    
   });
   receiver.detach();
 
   std::string hello{ "(client joined)" };
-  sendto(sock, hello.c_str, hello.size(), 0, (sockaddr *)&server, sizeof(server));
+  sendto(sock, hello.c_str(), hello.size(), 0, (sockaddr *)&server, sizeof(server));
 
   std::cout << "Connected. Type a message and press Enter." << '\n';
 
