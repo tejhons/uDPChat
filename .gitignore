@@ -3,3 +3,5 @@
 *~
 *.exe
 *.env
+Linux/chat/client/main
+Linux/chat/server/main
