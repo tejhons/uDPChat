@@ -26,4 +26,6 @@ Because UDP is connectionless, there is no handshake. The order is:
 
 ### Testing
 
-![Testing](images/win_chat_test.png)
+![Windows_test1](images/win_chat_test.png)
+
+![Linux_test1](images/Linux_test1.png)
