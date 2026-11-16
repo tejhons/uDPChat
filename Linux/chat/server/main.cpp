@@ -1,10 +1,30 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <ifaddrs.h> 
 
 #include <iostream>
 #include <map>
 #include <string>
+
+std::string getIP(){
+  std::string result{};
+  ifaddrs *ifaddr{};
+  if (getifaddrs(&ifaddr) != 0) {return result;}
+
+  for (ifaddrs *ifa{ ifaddr }; ifa != nullptr; ifa = ifa->ifa_next) {
+    if (ifa->ifa_addr == nullptr || ifa->ifa_addr->sa_family != AF_INET) {continue;}
+    if (std::string(ifa->ifa_name) == "lo") {continue;}
+
+    char ipStr[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &((sockaddr_in *)ifa->ifa_addr)->sin_addr, ipStr, sizeof(ipStr));
+    result = ipStr;
+    break;
+  }
+
+  freeifaddrs(ifaddr);
+  return result;
+}
 
 int main()
 {
@@ -30,6 +50,7 @@ int main()
     return 1;
   }
 
+  std::cout << "Server running at IP: " << getIP() << '\n'; 
   std::cout << "Server listening on port " << port << '\n';
 
   std::map<std::string, sockaddr_in> clients{};  //"ip:port" -> address
