@@ -27,6 +27,7 @@ Windows:
 
 Linux:
 - g++ -std=c++20 -Wall -Wextra -pthread server.cpp -o server
+- g++ -std=c++20 -Wall -Wextra -pthread client.cpp -o client
 
 
 ![Windows_test1](images/win_chat_test.png)
